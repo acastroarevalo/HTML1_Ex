@@ -38,9 +38,11 @@ function createTask(task) {
     const deleteBtn = document.createElement("button");
     if (task.completed) {
         taskBtn.style.backgroundColor = "#00ff00";
+        deleteBtn.setAttribute("disabled", "");
     }
     else {
         taskBtn.style.backgroundColor = "#ffff00";
+        deleteBtn.removeAttribute("disabled");
     }
     deleteBtn.append("X");
     taskBtn.append(task.text);
@@ -52,17 +54,18 @@ function createTask(task) {
         console.log(task.completed);
         if (task.completed) {
             taskBtn.style.backgroundColor = "#00ff00";
+            deleteBtn.setAttribute("disabled", "");
         }
         else {
             taskBtn.style.backgroundColor = "#ffff00";
+            deleteBtn.removeAttribute("disabled");
         }
         localStorage.setItem("tasks", JSON.stringify(tasks));
     });
     deleteBtn.addEventListener("click", function () {
-        if (task.completed) {
+        if (!task.completed) {
             if (confirm("Delete Task?")) {
                 newTask.remove();
-                //taskNumber -= 1;
                 for (let i = 0; i < tasks.length; i++) {
                     if (tasks[i].text == task.text) {
                         tasks.splice(i, 1);
@@ -71,7 +74,7 @@ function createTask(task) {
             }
         }
         else {
-            alert("Uncomplete task cannot be deleted");
+            alert("Complete task cannot be deleted");
         }
         localStorage.setItem("tasks", JSON.stringify(tasks));
     });
